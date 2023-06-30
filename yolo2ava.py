@@ -1,6 +1,22 @@
 
 '''
 python yolo2ava.py  --video_path ./inputVideo/studetClass.mp4 --persons_txt_path ./runs/detect/person/exp/labels --HRW_txt_path ./runs/detect/HRW/exp/labels --threshold_change 0.3 --out_crop_video_path ./out_crop_video --out_frames_path ./outFrames --annotations_path ./annotations --weights_HRW yolov7_4.2k_HRW.pt  --weights_yolo yolov7.pt --conf_HRW 0.8 --conf_yolo 0.25 --project_HRW ./runs/detect/HRW --project_yolo ./runs/detect/person --frame_rate 1 --detect_frames_path ./detect_frames
+
+python yolo2ava.py  --video_path ./inputVideo/studetClass.mp4 \
+                    --detect_frames_path ./detect_frames \
+                    --frame_rate 1 \
+                    --weights_HRW yolov7_4.2k_HRW.pt  \
+                    --weights_yolo yolov7.pt \
+                    --conf_HRW 0.8 \
+                    --conf_yolo 0.25 \
+                    --project_HRW ./runs/detect/HRW \
+                    --project_yolo ./runs/detect/person \
+                    --persons_txt_path ./runs/detect/person/exp/labels \
+                    --HRW_txt_path ./runs/detect/HRW/exp/labels \
+                    --threshold_change 0.3 \
+                    --out_crop_video_path ./out_crop_video \
+                    --out_frames_path ./outFrames \
+                    --annotations_path ./annotations
 '''
 import argparse
 import os
