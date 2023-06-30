@@ -1,6 +1,6 @@
 
 '''
-python yolo2ava.py  --video_path ./inputVideo/studetClass.mp4 --persons_txt_path ./runs/detect/person/exp/labels --HRW_txt_path ./runs/detect/HRW/exp/labels --threshold_change 0.3 --out_crop_video_path ./out_crop_video --out_frames_path ./outFrames --annotations_path ./annotations --weights_HRW yolov7_4.2k_HRW.pt  --weights_yolo yolov7.pt --conf_HRW 0.8 --conf_yolo 0.25 --source ./detect_frames/ --project_HRW ./runs/detect/HRW --project_yolo ./runs/detect/person --frame_rate 1 --detect_frames_path ./detect_frames
+python yolo2ava.py  --video_path ./inputVideo/studetClass.mp4 --persons_txt_path ./runs/detect/person/exp/labels --HRW_txt_path ./runs/detect/HRW/exp/labels --threshold_change 0.3 --out_crop_video_path ./out_crop_video --out_frames_path ./outFrames --annotations_path ./annotations --weights_HRW yolov7_4.2k_HRW.pt  --weights_yolo yolov7.pt --conf_HRW 0.8 --conf_yolo 0.25 --project_HRW ./runs/detect/HRW --project_yolo ./runs/detect/person --frame_rate 1 --detect_frames_path ./detect_frames
 '''
 import argparse
 import os
@@ -279,7 +279,6 @@ if __name__ == "__main__":
     parser.add_argument('--weights_yolo', nargs='+', type=str, help='model.pt path(s)')
     parser.add_argument('--conf_HRW', type=float, default=0.8, help='object confidence threshold')
     parser.add_argument('--conf_yolo', type=float, default=0.25, help='object confidence threshold')
-    parser.add_argument('--source', type=str, default='inference/images', help='source')  # file/folder, 0 for webcam
     parser.add_argument('--project_HRW', default='runs/detect', help='save results to project/name')
     parser.add_argument('--project_yolo', default='runs/detect', help='save results to project/name')
     parser.add_argument("--frame_rate", type=str, required=True, help="number of cropped video frames per second")
@@ -292,7 +291,6 @@ if __name__ == "__main__":
           + args.out_crop_video_path +  "\n"\
           + args.out_frames_path +  "\n"\
           + args.annotations_path +  "\n"\
-          + args.source +  "\n"\
           + args.project_HRW +  "\n"\
           + args.project_yolo +  "\n"
           + args.detect_frames_path +  "\n"
@@ -302,13 +300,13 @@ if __name__ == "__main__":
     extract_video_detect_frames(args.video_path, args.detect_frames_path, args.frame_rate)
 
     # HRW 对视频帧进行检测 
-    command_HRW = 'python detect.py --weights ' + str(args.weights_HRW[0]) + ' --conf ' + str(args.conf_HRW) + ' --img-size 640 ' + ' --source ' + str(args.source) + ' --save-txt ' + ' --project ' + str(args.project_HRW)
+    command_HRW = 'python detect.py --weights ' + str(args.weights_HRW[0]) + ' --conf ' + str(args.conf_HRW) + ' --img-size 640 ' + ' --source ' + str(args.detect_frames_path) + ' --save-txt ' + ' --project ' + str(args.project_HRW)
     
     # 执行命令
     os.system(command_HRW)
 
     #yolo  对视频帧进行检测
-    command_yolo = 'python detect.py --weights ' + str(args.weights_yolo[0]) + ' --conf ' + str(args.conf_yolo) + ' --img-size 640 ' + ' --source ' + str(args.source) + ' --save-txt ' + ' --project ' + str(args.project_yolo)
+    command_yolo = 'python detect.py --weights ' + str(args.weights_yolo[0]) + ' --conf ' + str(args.conf_yolo) + ' --img-size 640 ' + ' --source ' + str(args.detect_frames_path) + ' --save-txt ' + ' --project ' + str(args.project_yolo)
     # 执行命令
 
     os.system(command_yolo)
