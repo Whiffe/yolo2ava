@@ -299,16 +299,7 @@ if __name__ == "__main__":
     parser.add_argument("--detect_frames_path", type=str, required=True, help="path to detect frames file")
     args = parser.parse_args()
 
-    input("请手动清空：\n "\
-          + args.persons_txt_path +  "\n"\
-          + args. +  "\n"\
-          + args.out_crop_video_path +  "\n"\
-          + args.out_frames_path +  "\n"\
-          + args.annotations_path +  "\n"\
-          + args.project_HRW +  "\n"\
-          + args.project_yolo +  "\n"
-          + args.detect_frames_path +  "\n"
-          )
+
 
     # 
     extract_video_detect_frames(args.video_path, args.detect_frames_path, args.frame_rate)
