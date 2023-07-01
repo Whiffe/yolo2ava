@@ -284,7 +284,6 @@ if __name__ == "__main__":
     # 解析命令行参数
     parser = argparse.ArgumentParser()
     parser.add_argument("--video_path", type=str, required=True, help="path to input video file")
-    parser.add_argument("--persons_txt_path", type=str, required=True, help="path to persons txt")
     parser.add_argument("--threshold_change", type=float, required=True, help="filter out fluctuations in the number of people or screen switching thresholds")
     parser.add_argument("--out_crop_video_path", type=str, required=True, help="path to out video file")
     parser.add_argument("--out_frames_path", type=str, required=True, help="path to out frames file")
