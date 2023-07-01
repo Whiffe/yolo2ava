@@ -1,6 +1,6 @@
 
 '''
-python yolo2ava.py  --video_path ./inputVideo/studetClass.mp4 --persons_txt_path ./runs/detect/person/exp/labels --HRW_txt_path ./runs/detect/HRW/exp/labels --threshold_change 0.3 --out_crop_video_path ./out_crop_video --out_frames_path ./outFrames --annotations_path ./annotations --weights_HRW yolov7_4.2k_HRW.pt  --weights_yolo yolov7.pt --conf_HRW 0.8 --conf_yolo 0.25 --project_HRW ./runs/detect/HRW --project_yolo ./runs/detect/person --frame_rate 1 --detect_frames_path ./detect_frames
+python yolo2ava.py  --video_path ./inputVideo/studetClass.mp4 --threshold_change 0.3 --out_crop_video_path ./out_crop_video --out_frames_path ./outFrames --annotations_path ./annotations --weights_HRW yolov7_4.2k_HRW.pt  --weights_yolo yolov7.pt --conf_HRW 0.8 --conf_yolo 0.25 --project_HRW ./runs/detect/HRW --project_yolo ./runs/detect/person --frame_rate 1 --detect_frames_path ./detect_frames
 
 python yolo2ava.py  --video_path ./inputVideo/studetClass.mp4 \
                     --detect_frames_path ./detect_frames \
@@ -11,12 +11,11 @@ python yolo2ava.py  --video_path ./inputVideo/studetClass.mp4 \
                     --conf_yolo 0.25 \
                     --project_HRW ./runs/detect/HRW \
                     --project_yolo ./runs/detect/person \
-                    --persons_txt_path ./runs/detect/person/exp/labels \
-                    --HRW_txt_path ./runs/detect/HRW/exp/labels \
                     --threshold_change 0.3 \
                     --out_crop_video_path ./out_crop_video \
                     --out_frames_path ./outFrames \
                     --annotations_path ./annotations
+
 '''
 import argparse
 import os
@@ -286,7 +285,6 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--video_path", type=str, required=True, help="path to input video file")
     parser.add_argument("--persons_txt_path", type=str, required=True, help="path to persons txt")
-    parser.add_argument("--HRW_txt_path", type=str, required=True, help="path to directory containing HRW txt files")
     parser.add_argument("--threshold_change", type=float, required=True, help="filter out fluctuations in the number of people or screen switching thresholds")
     parser.add_argument("--out_crop_video_path", type=str, required=True, help="path to out video file")
     parser.add_argument("--out_frames_path", type=str, required=True, help="path to out frames file")
@@ -303,7 +301,7 @@ if __name__ == "__main__":
 
     input("请手动清空：\n "\
           + args.persons_txt_path +  "\n"\
-          + args.HRW_txt_path +  "\n"\
+          + args. +  "\n"\
           + args.out_crop_video_path +  "\n"\
           + args.out_frames_path +  "\n"\
           + args.annotations_path +  "\n"\
@@ -328,18 +326,20 @@ if __name__ == "__main__":
     os.system(command_yolo)
 
     # 提取出每一帧的人数
-    pesons_json = pesons_info_extract(args.persons_txt_path)
+    persons_txt_path = os.path.join(args.project_yolo,'exp/labels')
+    pesons_json = pesons_info_extract(persons_txt_path)
 
     # 获取最后一个txt文件编号和需要查找的索引列表
     # last_num 是获取 HRW检测结果中最后一帧的名字
-    last_num = get_image_nums(args.HRW_txt_path)
+    HRW_txt_path = os.path.join(args.project_HRW, 'exp/labels')
+    last_num = get_image_nums(HRW_txt_path)
 
     # index_list是一个列表，7n+4,n=0,1,2,3...，直到last_num-3
     index_list = generate_index_list(last_num)
     print("index_list:",index_list)
 
     # 处理所有要查找的HRW txt文件，并保存结果到json文件
-    HRW_json, index_list_filter = HRW_info_extract(args.video_path, args.HRW_txt_path, index_list, pesons_json, args.threshold_change)
+    HRW_json, index_list_filter = HRW_info_extract(args.video_path, HRW_txt_path, index_list, pesons_json, args.threshold_change)
 
     print("index_list_filter:",index_list_filter)
     print("HRW_json:",HRW_json)
