@@ -245,7 +245,7 @@ def train_val_csv(HRW_json, annotations_path):
                 for i, label in enumerate(value['label_content'], start=1):
                     x1, y1, x2, y2 = yolo_to_xywh(label)
                     person_id = i
-                    class_id = label['class_id']
+                    class_id = str(int(label['class_id'])+1)
                     writer.writerow([video_name, frame_id, x1, y1, x2, y2, class_id, person_id])
 
 # 生成 proposals_train.pkl 或者 proposals_val.pkl
